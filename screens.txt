@@ -1,0 +1,31 @@
+*text* = button to open seperate menu
+
+- main menu
+	- current xp (not sure if we're using xp or just money)
+	- current money balance
+	- *plane*
+	- *job*
+	- *skills/unlocks*
+
+- plane menu
+	- if no plane is selected, allow user to select one
+		- restrict planes so user can't fly a 747 right off the bat
+		- allow user to rent/purchase planes
+			- planes with more wear and tear are cheaper to rent/buy
+	- if possible, show wear and tear on plane
+		- allow user to purchase repairs
+
+- job menu
+	- if not on a job, show list of jobs to select
+		- randomly select a few airports within x miles
+		- generate jobs for each airport
+	- if on a job
+		- show job info
+			- origin and destination airports
+			- cargo info
+
+- skills menu
+	- I'm think it'll be similar to ETS/ATS skills
+	- able to unlock longer distance flights
+	- fragile cargo
+	- time restricted deliveries?

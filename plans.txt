@@ -1,0 +1,25 @@
+- pretty much a copy of "campaign" in ATS and ETS
+- start off with small plane, like cessna and work your way up to 757
+	- will need to decide how to deal with different planes
+		- how much it costs to rent/buy
+		- how to get the data, maybe there's a way to see power output or something
+- have skills user can unlock/purchase
+	- get better pay
+	- more/better mission availablity
+- have missions
+	- will need to get nearby airports
+		- hopefully there's a way to see what type of airport it is
+			- big vs small
+			- asphalt vs grass
+		- more missions will go to bigger airport, maybe better pay
+- user is rewarded for completing a mission
+	- base price of mission
+		- decided by distance probably
+	- times any skill multipliers
+	- minus any penalties from poor flying
+		- banking too hard on turns
+		- too high g's
+		- anything else that would make a flight not feel smooth leads to penalties
+		- maybe some missions don't matter as much
+			- shipment of pillows don't care if you fly upside down
+			- passengers care very much if you fly upside down

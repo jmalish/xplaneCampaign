@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <string>
+#include <iostream>
+#include <fstream>
 
 #include <XPLMDisplay.h>
 #include <XPLMGraphics.h>
@@ -10,16 +12,20 @@
 #include <XPWidgets.h>
 #include <XPStandardWidgets.h>
 
+using namespace std;
 
 // Global vars
 XPLMDataRef latitude, longitude, elevation,	groundSpeed, gForcesX, gForcesY, gForcesZ;
 XPWidgetID mainWindow, txtTest, btnOK;
 
+char saveFileName[100] = "xCampaignSaveFile.txt";
+
 // Functions/callback Declarations
 float getFlightDataLoopCallback(float inElapsedSinceLastCall, float inElapsedTimeSinceLastLoop, int inCounter, void *inRefcon);
 void createMainWindow();
 int mainWindowCallback(XPWidgetMessage msg, XPWidgetID, intptr_t, intptr_t);
-void closeMainWindow();
+void closeWidgetWindow(XPWidgetID);
+bool fileCheck();
 
 
 #pragma region SDK Stuff
@@ -53,7 +59,7 @@ PLUGIN_API int XPluginStart(char * outName, char * outSig,	char * outDesc)  // R
 
 PLUGIN_API void	XPluginStop(void) // Cleanup routine deallocates our window.
 {
-	closeMainWindow();
+	closeWidgetWindow(mainWindow);
 }
 
 PLUGIN_API void XPluginDisable(void) // don't need to do anything here, but it is required
@@ -84,7 +90,7 @@ float getFlightDataLoopCallback(float inElapsedSinceLastCall, float inElapsedTim
 	float gfy = XPLMGetDataf(gForcesY); // g forces on the Y axis
 	float gfZ = XPLMGetDataf(gForcesZ); // g forces on the Z axis
 
-
+	createMainWindow();
 	// XPLMDebugString("Log test!\n");  // prints string to log.txt, found in xplane base dir
 	
 	return 0.5; // this value is how often the loop runs, in seconds, a negative number should loop by frames instead
@@ -92,13 +98,11 @@ float getFlightDataLoopCallback(float inElapsedSinceLastCall, float inElapsedTim
 
 int mainWindowCallback(XPWidgetMessage msg, XPWidgetID widget, intptr_t param1, intptr_t param2) {
 	if (msg == xpMessage_CloseButtonPushed) {
-		closeMainWindow();
+		closeWidgetWindow(mainWindow);
 		return 1;
 	}
-	else if (msg == xpMessage_CloseButtonPushed) {
-		if ((long)btnOK == param1) {
-			// OK button was clicked
-		}
+	else if (msg == xpMsg_PushButtonPressed) {
+		XPLMDebugString("Ok button pushed.");
 	}
 
 	return 0;
@@ -125,7 +129,34 @@ void createMainWindow() {
 	btnOK = XPCreateWidget(x + 70, y - 160, x + 140, y - 180, 1, "OK", 0, mainWindow, xpWidgetClass_Button);
 }
 
-void closeMainWindow() {
-	XPDestroyWidget(mainWindow, 1);
+void closeWidgetWindow(XPWidgetID windowName) {
+	XPDestroyWidget(windowName, 1);
+}
+
+bool fileCheck() {
+	ifstream checkedFile(saveFileName);
+	if (checkedFile.good()) {
+		XPLMDebugString("Save file found!\n");
+
+		return true;
+	}
+	else {
+		XPLMDebugString("Save file not found, or something else went wrong.\nCreating file now.\n");
+		try
+		{
+			ofstream createdFile(saveFileName);
+			XPLMDebugString("File created successfully.\n");
+
+			return true;
+		}
+		catch (const std::exception&)
+		{
+			XPLMDebugString("Something went wrong, unable to create file.\n");
+
+			return false;
+		}
+	}
+
+	return false;
 }
 #pragma endregion My Functions
